@@ -115,13 +115,15 @@ public class FinalTwitterBotMain extends PApplet {
 				Scraper scraper = new Scraper(); 
 				ArrayList<String> results;
 				try {
-					results = scraper.scrapeAZResults("dogs");
+//					results = scraper.scrapeGoogleResults("dogs");
+					results = scraper.scrapeAZResults("songs");
 					
 					//print your results
 					System.out.println(results); 
 					
-					scraper.scrape("http://google.com",  "dogs"); //see class documentation
-		
+//					scraper.scrape("http://google.com",  "dogs"); //see class documentation
+					scraper.scrapeSongs("http://azlyrics.com",  "songs");
+					
 				} catch (JauntException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
