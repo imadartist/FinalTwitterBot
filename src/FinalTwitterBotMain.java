@@ -115,13 +115,13 @@ public class FinalTwitterBotMain extends PApplet {
 				Scraper scraper = new Scraper(); 
 				ArrayList<String> results;
 				try {
-//					results = scraper.scrapeGoogleResults("dogs");
-					results = scraper.scrapeAZResults("songs");
+//					results = scraper.scrapeGoogleResults("songs");
+//					results = scraper.scrapeAZResults("s");
 					
 					//print your results
-					System.out.println(results); 
+//					System.out.println(results); 
 					
-//					scraper.scrape("http://google.com",  "dogs"); //see class documentation
+//					scraper.scrape("http://google.com",  "songs"); //see class documentation
 					scraper.scrapeSongs("http://azlyrics.com",  "songs");
 					
 				} catch (JauntException e) {
@@ -196,7 +196,7 @@ public class FinalTwitterBotMain extends PApplet {
 		textSize(12);
 		fill(0, 102, 153);
 		text("Input a song title or lyric to generate a tweet", width / 4, height / 4);
-		text("Press 0 to run default song title or lyric and generate a tweet", width / 4, height / 4);
+		text("Press 0 to run default song title or lyric and generate a tweet", width / 4, height / 4 + 50);
 		text("Press 1 to start Unit Test 1 (Probability Transition Table)", width / 4, height / 4 + 100);
 		text("Press 2 to start Unit Test 2 (Generating and Tweeting a 20-word Line)", width / 4, height / 4 + 150);
 		text("Press 3 to start Unit Test 3 (Generating and Tweeting a 20-word Line 10,000 times)", width / 4,

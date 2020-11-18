@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.jaunt.*;
+import com.jaunt.component.Form;
+
 import java.util.regex.Matcher; //Used to search for the pattern
 import java.util.regex.Pattern; //Defines a pattern (to be used in a search)
 
@@ -17,7 +19,7 @@ public class Scraper {
 
 	UserAgent userAgent; // ( an internal 'headless' browser)
 	static String GOOGLE_URL = "http://google.com";
-	static String SONG_URL = "https://www.azlyrics.com/";
+	static String SONG_URL = "https://search.azlyrics.com/search.php";
 	static String HTTP = "=http";
 
 	Scraper() {
@@ -30,6 +32,7 @@ public class Scraper {
 		userAgent.visit(url); // visit
 		userAgent.doc.apply(searchTerm).submit(); // apply form input (starting at first editable field & submit)
 
+		
 		Elements links = userAgent.doc.findEvery("<h3 class=r>").findEvery("<a>"); // find search result links
 		// find search result script
 		for (Element link : links)
@@ -38,16 +41,20 @@ public class Scraper {
 	}
 
 	void scrapeSongs(String url, String searchTerm) throws JauntException {
-		// LOOK AT JAUNT API for how this works
 		userAgent = new UserAgent(); // create new userAgent (headless browser)
 		userAgent.settings.autoSaveAsHTML = true;
 		userAgent.visit(url); // visit
-		userAgent.doc.apply(searchTerm).submit(); // apply form input (starting at first editable field & submit)
+//		userAgent.doc.apply(searchTerm).submit(); // apply form input (starting at first editable field & submit)
 		/*Elements links = userAgent.doc.findEvery(
 				"<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->")
 				.findEvery("</div>");
 		*/
-		Elements links = userAgent.doc.findEvery("<h3 class=r>").findEvery("<a>"); // find search result links
+		Form form = userAgent.doc.getForm(0);
+		form.setTextField("q", searchTerm);
+		form.submit();
+		
+//		Elements links = userAgent.doc.findEvery("<h3 class=r>").findEvery("<a>"); // find search result links
+		Elements links = userAgent.doc.findEvery("<td class=\"text-left visitedlyr\">").findEvery("<a>");
 		for (Element link : links)
 			System.out.println(link.getAt("href")); // print results 
 		// return every div
@@ -57,6 +64,7 @@ public class Scraper {
 	// prints the text content of google results -- can modify to save this text
 	ArrayList<String> scrapeAZResults(String searchTerm) throws JauntException {
 		{
+//replace all below w scrape songs
 			userAgent = new UserAgent(); // create new userAgent (headless browser)
 			userAgent.settings.autoSaveAsHTML = true;
 //	    	userAgent.visit(GOOGLE_URL);       //visit 
@@ -67,7 +75,7 @@ public class Scraper {
 			Elements links = userAgent.doc.findEvery("<a>"); // find search result links
 
 			ArrayList<String> results = new ArrayList();
-
+// replace all above w scrape songs except for the printing
 			for (Element link : links) {
 				// if not statement 
 				String strLink = link.getAt("href"); //this gives us the link to go to
@@ -95,6 +103,7 @@ public class Scraper {
 	}
 
 	void cleanStrings() {// write a method to get the string of everything in the body (index of --> substring of the results you want)
+		//STEPS:
 		// open the content by using AZ to search
 		//if href.equals(any of the links earlier on the page/menu href) else you'll visit it and train so link.getat
 			//this if will go in the for (Element link : links) on the next line
@@ -104,12 +113,14 @@ public class Scraper {
 			//end index = </div>
 		//take a substring of the lyrics (everything below) until the <div>
 		//put it through the text tokenizer and separate the <br>
+		
+		
 //		try {
 //			UserAgent userAgent3 = new UserAgent();
 //			userAgent3.visit(strLink.substring(startIndex+1, endIndex)); //change this			
 //			Element body = userAgent3.doc.findFirst(<div>).getTextContent();
 //			results.add(body); 
-//			System.out.println("body's childtext: " + body.getChildText(indexOf(body)));   //join child text of body element
+//			System.out.println("body's childtext: " + body.getChildText(indexOf(body)));   
 //			System.out.println("-----------");
 //			System.out.println("all body's text: " + body.getTextContent());
 //		} catch (Exception e) {
@@ -118,7 +129,6 @@ public class Scraper {
 	}
 	
 	//GOOGLE STUFF
-
 	//prints the text content of google results -- can modify to save this text
 	ArrayList<String> scrapeGoogleResults(String searchTerm) throws JauntException{
 	{
