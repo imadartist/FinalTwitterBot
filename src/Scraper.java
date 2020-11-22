@@ -71,8 +71,12 @@ public class Scraper {
 			userAgent.visit(SONG_URL);
 			userAgent.doc.apply(searchTerm).submit(); // apply form input (starting at first editable field & submit)
 
+			Form form = userAgent.doc.getForm(0);
+			form.setTextField("q", searchTerm);
+			form.submit();
+			
 //			Elements links = userAgent.doc.findEvery("<h3 class=r>").findEvery("<a>");   //find search result links 
-			Elements links = userAgent.doc.findEvery("<a>"); // find search result links
+			Elements links = userAgent.doc.findEvery("<td class=\"text-left visitedlyr\">").findEvery("<a>");
 
 			ArrayList<String> results = new ArrayList();
 // replace all above w scrape songs except for the printing

@@ -130,15 +130,13 @@ public class FinalTwitterBotMain extends PApplet {
 				}
 				
 //				Scraper songScraper = new Scraper(); 
-//				ArrayList<String> resultsOne;
+//				ArrayList<String> results;
 //				try {
 //					//will put input from user in a variable that will be the parameter below
-//					resultsOne = songScraper.scrapeGoogleResults("everlasting love");
-//					resultsTwo = songScraper.scrapeGoogleResults("everlasting love");
+//					results = songScraper.AZResults("everlasting love");
 //					
 //					//print your results
-//					System.out.println(resultsOne); 
-//					System.out.println(resultsTwo); 
+//					System.out.println(results); 
 //					
 //					songScraper.scrape("https://www.azlyrics.com/",  "everlasting love"); //see class documentation
 //					
