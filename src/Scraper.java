@@ -57,6 +57,7 @@ public class Scraper {
 		Elements links = userAgent.doc.findEvery("<td class=\"text-left visitedlyr\">").findEvery("<a>");
 		for (Element link : links)
 			System.out.println(link.getAt("href")); // print results 
+		//return  userAgent.doc.findFirst("<div>").getTextContent();
 		// return every div
 		// take the text until the /div
 	}
