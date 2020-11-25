@@ -45,7 +45,8 @@ public class FinalTwitterBotMain extends PApplet {
 
 	// handles twitter api
 	TwitterInteraction tweet;
-
+	MarkovGenerator<String> markov = new MarkovGenerator(); // declaring generator
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		PApplet.main("FinalTwitterBotMain"); // Not really using processing functionality but ya know, you _could_. UI not
@@ -113,37 +114,33 @@ public class FinalTwitterBotMain extends PApplet {
 		// dogs
 		//		//you may use this content to train your AI too
 				Scraper scraper = new Scraper(); 
-				ArrayList<String> results;
+				ArrayList<String> scrapeAZ  = new ArrayList<String>();
+				tokens = new ArrayList<String>();
+
+				
 				try {
+					//interfascia
 //					results = scraper.scrapeGoogleResults("songs");
-//					results = scraper.scrapeAZResults("s");
+					scrapeAZ = scraper.scrapeAZResults("Hey Jude"); //scrapeAZResults is an ArrayList of strings in the Scraper class
 					
 					//print your results
-//					System.out.println(results); 
+					System.out.println(scrapeAZ); 
 					
 //					scraper.scrape("http://google.com",  "songs"); //see class documentation
-					scraper.scrapeSongs("http://azlyrics.com",  "songs");
+//					scraper.scrapeSongs("http://azlyrics.com",  "Hey Jude"); //scrapeSongs is a method in the Scraper class
+				
+					for (int i = 0; i < scrapeAZ.size(); i++) {
+						//remove <br>
+						TextTokenizer tokenizer = new TextTokenizer(scrapeAZ.get(i));
+						ArrayList<String> t = tokenizer.parseSearchText();
+						markov.train(t); // training generator on results taken 
+					}
 					
 				} catch (JauntException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-//				Scraper songScraper = new Scraper(); 
-//				ArrayList<String> results;
-//				try {
-//					//will put input from user in a variable that will be the parameter below
-//					results = songScraper.AZResults("everlasting love");
-//					
-//					//print your results
-//					System.out.println(results); 
-//					
-//					songScraper.scrape("https://www.azlyrics.com/",  "everlasting love"); //see class documentation
-//					
-//				} catch (JauntException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 
 	}
 
@@ -193,18 +190,16 @@ public class FinalTwitterBotMain extends PApplet {
 //		player.play();
 		textSize(12);
 		fill(0, 102, 153);
-		text("Input a song title or lyric to generate a tweet", width / 4, height / 4);
+//		text("Input a song title or lyric to generate a tweet", width / 4, height / 4);
 		text("Press 0 to run default song title or lyric and generate a tweet", width / 4, height / 4 + 50);
-		text("Press 1 to start Unit Test 1 (Probability Transition Table)", width / 4, height / 4 + 100);
-		text("Press 2 to start Unit Test 2 (Generating and Tweeting a 20-word Line)", width / 4, height / 4 + 150);
-		text("Press 3 to start Unit Test 3 (Generating and Tweeting a 20-word Line 10,000 times)", width / 4,
-				height / 4 + 200);
+//		text("Press 1 to start Unit Test 1 (Probability Transition Table)", width / 4, height / 4 + 100);
+//		text("Press 2 to start Unit Test 2 (Generating and Tweeting a 20-word Line)", width / 4, height / 4 + 150);
+//		text("Press 3 to start Unit Test 3 (Generating and Tweeting a 20-word Line 10,000 times)", width / 4, height / 4 + 200);
 
 	}
 
 	public void keyPressed() {
-		MarkovGenerator<String> markov = new MarkovGenerator(); // declaring generator
-		markov.train(tokens); // training generator on tokens taken from TXT file
+
 		tweet = new TwitterInteraction(); //declaring tweet as an object of the TwitterInteraction class
 
 		// UNIT TEST STUFF
@@ -239,6 +234,7 @@ public class FinalTwitterBotMain extends PApplet {
 		mRhythms.train(midiNotesMary.getRhythmArray());
 
 		if (key == '0') {
+			//if comma, dont add space
 			String seed = "I"; //creating a variable that holds the string "I" which later be included in a parameter (and posted in front of generated content)
 			ArrayList<String> sentence = new ArrayList<>(markov.generate(20, seed)); //declaring an ArrayList "sentence" that will take our markov generated sequence of 20 and the seed variable above
 			String status = ""; //status starts out empty
