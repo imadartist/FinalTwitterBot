@@ -11,8 +11,6 @@ import java.util.List;
 import com.jaunt.*;
 import com.jaunt.component.Form;
 
-import java.util.regex.Matcher; //Used to search for the pattern
-import java.util.regex.Pattern; //Defines a pattern (to be used in a search)
 
 //This class uses the jaunt API to scrape web content and return the resulting text. 
 //https://jaunt-api.com
@@ -51,18 +49,7 @@ public class Scraper {
 		form.submit();
 
 		Elements links = userAgent.doc.findEvery("<td class=\"text-left visitedlyr\">").findEvery("<a>"); // find search
-																											// result
-																											// links
-
-		// return every thing from <div> to </div> and print results
-		// ATTEMPT 1
-		String testResults = userAgent.doc.findEvery("<div>").getTextContent();
-		// ATTEMPT 2
-//		String testResults = userAgent.doc.findFirst("<div class=\"lyricsh\">").findEach("<br>").getChildText();
-		// ATTEMPT 3
-//		String testResults =  userAgent.doc.findFirst("<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->").findEach("<br>").getTextContent();
-
-//		System.out.println(testResults);
+																											// result																						// links
 
 		for (Element link : links)
 			System.out.println(link.getAt("href")); // prints the links that are search results
@@ -98,7 +85,7 @@ public class Scraper {
 //					int endIndex = strLink.indexOf("&amp;sa=");
 				UserAgent userAgent2 = new UserAgent();
 				try {
-//						userAgent2.visit(strLink.substring(startIndex + 1, endIndex)); // puts text into the search page
+//					userAgent2.visit(strLink.substring(startIndex + 1, endIndex)); // puts text into the search page
 					userAgent2.visit(strLink);
 					String body = userAgent2.doc.findFirst("<body>").innerHTML();
 					results.add(body);
@@ -117,9 +104,7 @@ public class Scraper {
 //		} 
 	}
 
-	ArrayList<String> cleanStrings(ArrayList<String> lyricResults) {// write a method to get the string of everything in
-																	// the body (index of -->
-		// substring of the results you want)
+	ArrayList<String> cleanStrings(ArrayList<String> lyricResults) {
 	
 		ArrayList<String> newResults = new ArrayList<String>();
 		String disclaimerText = "<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->";
@@ -130,15 +115,16 @@ public class Scraper {
 			int endIndex = res.indexOf("</div>");
 			res = res.substring(0, endIndex);
 			newResults.add(res);
+	
 		}
 		return newResults;
 
 	}
 
-	private Object indexOf(String cleanBody) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	private Object indexOf(String cleanBody) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	// GOOGLE STUFF
 	// prints the text content of google results -- can modify to save this text

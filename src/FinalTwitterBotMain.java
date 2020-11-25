@@ -115,7 +115,6 @@ public class FinalTwitterBotMain extends PApplet {
 		//		//you may use this content to train your AI too
 				Scraper scraper = new Scraper(); 
 				ArrayList<String> scrapeAZ  = new ArrayList<String>();
-				tokens = new ArrayList<String>();
 
 				
 				try {
@@ -131,6 +130,9 @@ public class FinalTwitterBotMain extends PApplet {
 				
 					for (int i = 0; i < scrapeAZ.size(); i++) {
 						//remove <br>
+						String scrapeString = scrapeAZ.get(i);
+						scrapeString = scrapeAZ.get(i).replaceAll("<br>" , " "); 
+						
 						TextTokenizer tokenizer = new TextTokenizer(scrapeAZ.get(i));
 						ArrayList<String> t = tokenizer.parseSearchText();
 						markov.train(t); // training generator on results taken 
