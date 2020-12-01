@@ -90,8 +90,8 @@ public class FinalTwitterBotMain extends PApplet {
 //				player.setMelody(pitchMarkovGenerator.generate(20));
 //				player.setRhythm(rhythmMarkovGenerator.generate(20));
 
-//		loadNovel("data/Catechism.txt"); // TODO: must train from another source
-		//		println("Token size:"+tokens.size());
+		loadNovel("data/Living"); // TODO: must train from another source
+				println("Token size:"+tokens.size());
 
 		// TODO: train an AI algorithm (eg, Markov Chain) and generate text for markov
 		// chain status
@@ -115,26 +115,36 @@ public class FinalTwitterBotMain extends PApplet {
 		//		//you may use this content to train your AI too
 				Scraper scraper = new Scraper(); 
 				ArrayList<String> scrapeAZ  = new ArrayList<String>();
-
+				ArrayList<String> scrapeLyrics  = new ArrayList<String>();
 				
 				try {
 					//interfascia
 //					results = scraper.scrapeGoogleResults("songs");
 				
-					scrapeAZ = scraper.scrapeAZResults("Everlasting Love"); //scrapeAZResults is an ArrayList of strings in the Scraper class
+//					scrapeAZ = scraper.scrapeAZResults("Everlasting Love"); //scrapeAZResults is an ArrayList of strings in the Scraper class
+					scrapeLyrics = scraper.scrapeLyricsComResults("The Way");
 					
 					//print your results
-					System.out.println(scrapeAZ); 
+//					System.out.println(scrapeAZ); 
+					System.out.println(scrapeLyrics);
 					
 //					scraper.scrape("http://google.com",  "songs"); //see class documentation
 //					scraper.scrapeSongs("http://azlyrics.com",  "Hey Jude"); //scrapeSongs is a method in the Scraper class
-				
-					for (int i = 0; i < scrapeAZ.size(); i++) {
-						//remove <br>
-						String scrapeString = scrapeAZ.get(i);
-						scrapeString = scrapeAZ.get(i).replaceAll("<br>" , " "); 
+//					scraper.scrapeSongs("http://lyrics.com",  "Everlasting Love");
+					
+//					for (int i = 0; i < scrapeAZ.size(); i++) {
+//						//remove <br>
+//						String scrapeString = scrapeAZ.get(i);
+//						scrapeString = scrapeAZ.get(i).replaceAll("<br>" , " "); 
+//						
+//						TextTokenizer tokenizer = new TextTokenizer(scrapeString);
+//						ArrayList<String> t = tokenizer.parseSearchText();
+//						markov.train(t); // training generator on results taken 
+//					}
+					
+					for (int i = 0; i < scrapeLyrics.size(); i++) {
 						
-						TextTokenizer tokenizer = new TextTokenizer(scrapeString);
+						TextTokenizer tokenizer = new TextTokenizer(scrapeLyrics.get(i));
 						ArrayList<String> t = tokenizer.parseSearchText();
 						markov.train(t); // training generator on results taken 
 					}
@@ -149,26 +159,26 @@ public class FinalTwitterBotMain extends PApplet {
 
 	// this loads the novel 'The Grand Sophy' given a path p -- but really will load
 	// any file.
-//	void loadNovel(String p) {
-//		String filePath = getPath(p);
-//		Path path = Paths.get(filePath);
-//		tokens = new ArrayList<String>();
-//
-//		try {
-//			List<String> lines = Files.readAllLines(path);
-//
-//			for (int i = 0; i < lines.size(); i++) {
-//
-//				TextTokenizer tokenizer = new TextTokenizer(lines.get(i));
-//				ArrayList<String> t = tokenizer.parseSearchText();
-//				tokens.addAll(t);
-//			}
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			println("Oopsie! We had a problem reading a file!");
-//		}
-//	}
+	void loadNovel(String p) {
+		String filePath = getPath(p);
+		Path path = Paths.get(filePath);
+		tokens = new ArrayList<String>();
+
+		try {
+			List<String> lines = Files.readAllLines(path);
+
+			for (int i = 0; i < lines.size(); i++) {
+
+				TextTokenizer tokenizer = new TextTokenizer(lines.get(i));
+				ArrayList<String> t = tokenizer.parseSearchText();
+				tokens.addAll(t);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			println("Oopsie! We had a problem reading a file!");
+		}
+	}
 
 	void printTokens() {
 		for (int i = 0; i < tokens.size(); i++)
@@ -204,7 +214,8 @@ public class FinalTwitterBotMain extends PApplet {
 	public void keyPressed() {
 
 		tweet = new TwitterInteraction(); //declaring tweet as an object of the TwitterInteraction class
-
+		//markov.train(tokens); //this is for training from a file 
+		
 		// UNIT TEST STUFF
 		// DECLARING GENERATORS
 		// why do I have probability generators declared and training in setup?
@@ -239,7 +250,7 @@ public class FinalTwitterBotMain extends PApplet {
 		if (key == '0') {
 			//if comma, dont add space
 			String seed = "I"; //creating a variable that holds the string "I" which later be included in a parameter (and posted in front of generated content)
-			ArrayList<String> sentence = new ArrayList<>(markov.generate(10, seed)); //declaring an ArrayList "sentence" that will take our markov generated sequence of 20 and the seed variable above
+			ArrayList<String> sentence = new ArrayList<>(markov.generate(15, seed)); //declaring an ArrayList "sentence" that will take our markov generated sequence of 20 and the seed variable above
 			String status = ""; //status starts out empty
 			for (int i = 0; i < sentence.size(); i++) { //looping through the ArrayList
 				status = status + sentence.get(i).toLowerCase() + " "; //adding each word from the text to the one before with a space in between (adding all strings)
