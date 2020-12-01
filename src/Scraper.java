@@ -42,22 +42,20 @@ public class Scraper {
 		userAgent = new UserAgent(); // create new userAgent (headless browser)
 		userAgent.settings.autoSaveAsHTML = true;
 		userAgent.visit(SONG_URL);
-//		userAgent.doc.apply(searchTerm).submit(); // apply form input (starting at first editable field & submit)
 
-//AZ STUFF
+//AZ 
 //		Form form = userAgent.doc.getForm(0);
 //		form.setTextField("q", searchTerm);
 //		form.submit();
 
-//LYRICS.COM STUFF
+//LYRICS.COM 
 		Form form = userAgent.doc.getForm(0);
 		form.setTextField("st", searchTerm);
 		form.submit();
 
-//		Elements links = userAgent.doc.findEvery("<td class=\"text-left visitedlyr\">").findEvery("<a>"); // find search AZ
+//		Elements links = userAgent.doc.findEvery("<td class=\"text-left visitedlyr\">").findEvery("<a>"); // AZ
 
-		Elements links = userAgent.doc.findEvery("<p class=\"lyric-meta-title\">").findEvery("<a>"); // LYRICS.COM //
-																										// links
+		Elements links = userAgent.doc.findEvery("<p class=\"lyric-meta-title\">").findEvery("<a>"); // LYRICS.COM 
 
 //		for (Element link : links)
 //			System.out.println(link.getAt("href")); // prints the links that are search results
@@ -65,20 +63,13 @@ public class Scraper {
 
 		ArrayList<String> results = new ArrayList();
 		for (Element link : links) {
-//		if (href.equals(any of the links earlier on the page/menu)) { //could also be a if not statement
-//		if (link != searchTerm)) {
-//			//skip links from the nav bar
-//		} else { //visit and train 				
+			
 			String strLink = link.getAt("href"); // this gives us the link to go to
-//		int startIndex = strLink.indexOf(HTTP);
-//		if (startIndex != -1) {
-//			int endIndex = strLink.indexOf("&amp;sa=");
 			UserAgent userAgent2 = new UserAgent();
 			try {
-//			userAgent2.visit(strLink.substring(startIndex + 1, endIndex)); // puts text into the search page
 				userAgent2.visit(strLink);
-			//	String body = userAgent2.doc.findFirst("<body>").innerHTML();
-				String body = userAgent2.doc.findFirst("<pre>").innerText();
+			//	String body = userAgent2.doc.findFirst("<body>").innerHTML(); //AZ
+				String body = userAgent2.doc.findFirst("<pre>").innerText(); //LYRICS.COM
 				results.add(body);
 
 			} catch (Exception e) {
@@ -88,7 +79,7 @@ public class Scraper {
 
 		}
 
-//		results = cleanStrings(results);
+//		results = cleanAZStrings(results); //AZ
 		System.out.println(results);
 		return results;
 	}
@@ -125,42 +116,28 @@ public class Scraper {
 		}
 	}
 
-	// prints the text content of google results -- can modify to save this text
+
 	ArrayList<String> scrapeAZResults(String searchTerm) throws JauntException {
 		{
 
 			userAgent = new UserAgent(); // create new userAgent (headless browser)
 			userAgent.settings.autoSaveAsHTML = true;
-//	    	userAgent.visit(GOOGLE_URL);       //visit 
 			userAgent.visit(SONG_URL);
-//			userAgent.doc.apply(searchTerm).submit(); // apply form input (starting at first editable field & submit)
-
-//			Form form = userAgent.doc.getForm(0);
-//			form.setTextField("q", searchTerm);
-//			form.submit();
-
-			// LYRICS.COM STUFF
+			
+			// apply form input (starting at first editable field & submit)
 			Form form = userAgent.doc.getForm(0);
-			form.setTextField("st", searchTerm);
+			form.setTextField("q", searchTerm);
 			form.submit();
 
-//			Elements links = userAgent.doc.findEvery("<h3 class=r>").findEvery("<a>");   //find search result links 
+
 			Elements links = userAgent.doc.findEvery("<td class=\"text-left visitedlyr\">").findEvery("<a>");
 
 			ArrayList<String> results = new ArrayList();
 
-			for (Element link : links) {
-//				if (href.equals(any of the links earlier on the page/menu)) { //could also be a if not statement
-//				if (link != searchTerm)) {
-//					//skip links from the nav bar
-//				} else { //visit and train 				
+			for (Element link : links) {		
 				String strLink = link.getAt("href"); // this gives us the link to go to
-//				int startIndex = strLink.indexOf(HTTP);
-//				if (startIndex != -1) {
-//					int endIndex = strLink.indexOf("&amp;sa=");
 				UserAgent userAgent2 = new UserAgent();
 				try {
-//					userAgent2.visit(strLink.substring(startIndex + 1, endIndex)); // puts text into the search page
 					userAgent2.visit(strLink);
 					String body = userAgent2.doc.findFirst("<body>").innerHTML();
 					results.add(body);
@@ -168,26 +145,23 @@ public class Scraper {
 				} catch (Exception e) {
 					System.out.println("Encountered an unsupported file type or webpage. Moving on...");
 				}
-//				}
 
 			}
 
-			results = cleanStrings(results);
+			results = cleanAZStrings(results);
 			System.out.println(results);
 			return results;
 		}
 //		} 
 	}
 
-	ArrayList<String> cleanStrings(ArrayList<String> lyricResults) {
+	ArrayList<String> cleanAZStrings(ArrayList<String> lyricResults) {
 
 		ArrayList<String> newResults = new ArrayList<String>();
 		String disclaimerText = "<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->";
-//		String startIndexLyricsContent = userAgent2.doc.findFirst("<em>").innerHTML(); //LYRICS.COM
 		for (int i = 0; i < lyricResults.size(); i++) {
 			String res = lyricResults.get(i);
-			int startIndex = res.indexOf(disclaimerText); // AZ
-//			int startIndex = res.indexOf(startIndexLyricsContent); //LYRICS.COM
+			int startIndex = res.indexOf(disclaimerText); 
 			res = res.substring(startIndex, res.length());
 			int endIndex = res.indexOf("</div>");
 			res = res.substring(0, endIndex);
@@ -198,10 +172,6 @@ public class Scraper {
 
 	}
 
-//	private Object indexOf(String cleanBody) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 
 	// GOOGLE STUFF
 	// prints the text content of google results -- can modify to save this text

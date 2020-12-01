@@ -122,7 +122,7 @@ public class FinalTwitterBotMain extends PApplet {
 //					results = scraper.scrapeGoogleResults("songs");
 				
 //					scrapeAZ = scraper.scrapeAZResults("Everlasting Love"); //scrapeAZResults is an ArrayList of strings in the Scraper class
-					scrapeLyrics = scraper.scrapeLyricsComResults("The Way");
+					scrapeLyrics = scraper.scrapeLyricsComResults("Sing");
 					
 					//print your results
 //					System.out.println(scrapeAZ); 
@@ -144,7 +144,10 @@ public class FinalTwitterBotMain extends PApplet {
 					
 					for (int i = 0; i < scrapeLyrics.size(); i++) {
 						
-						TextTokenizer tokenizer = new TextTokenizer(scrapeLyrics.get(i));
+						String lyricsScrape = scrapeLyrics.get(i);
+//						lyricsScrape = scrapeAZ.get(i).replaceAll(")" , " ").replaceAll("(" , " "); 
+						
+						TextTokenizer tokenizer = new TextTokenizer(lyricsScrape);
 						ArrayList<String> t = tokenizer.parseSearchText();
 						markov.train(t); // training generator on results taken 
 					}
