@@ -49,7 +49,8 @@ public class Scraper {
 		form.submit();
 
 		Elements links = userAgent.doc.findEvery("<td class=\"text-left visitedlyr\">").findEvery("<a>"); // find search
-																											// result																						// links
+																											// result
+																								// links
 
 		for (Element link : links)
 			System.out.println(link.getAt("href")); // prints the links that are search results

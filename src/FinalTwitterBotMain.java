@@ -120,7 +120,8 @@ public class FinalTwitterBotMain extends PApplet {
 				try {
 					//interfascia
 //					results = scraper.scrapeGoogleResults("songs");
-					scrapeAZ = scraper.scrapeAZResults("Hey Jude"); //scrapeAZResults is an ArrayList of strings in the Scraper class
+				
+					scrapeAZ = scraper.scrapeAZResults("Everlasting Love"); //scrapeAZResults is an ArrayList of strings in the Scraper class
 					
 					//print your results
 					System.out.println(scrapeAZ); 
@@ -133,7 +134,7 @@ public class FinalTwitterBotMain extends PApplet {
 						String scrapeString = scrapeAZ.get(i);
 						scrapeString = scrapeAZ.get(i).replaceAll("<br>" , " "); 
 						
-						TextTokenizer tokenizer = new TextTokenizer(scrapeAZ.get(i));
+						TextTokenizer tokenizer = new TextTokenizer(scrapeString);
 						ArrayList<String> t = tokenizer.parseSearchText();
 						markov.train(t); // training generator on results taken 
 					}
@@ -238,10 +239,10 @@ public class FinalTwitterBotMain extends PApplet {
 		if (key == '0') {
 			//if comma, dont add space
 			String seed = "I"; //creating a variable that holds the string "I" which later be included in a parameter (and posted in front of generated content)
-			ArrayList<String> sentence = new ArrayList<>(markov.generate(20, seed)); //declaring an ArrayList "sentence" that will take our markov generated sequence of 20 and the seed variable above
+			ArrayList<String> sentence = new ArrayList<>(markov.generate(10, seed)); //declaring an ArrayList "sentence" that will take our markov generated sequence of 20 and the seed variable above
 			String status = ""; //status starts out empty
 			for (int i = 0; i < sentence.size(); i++) { //looping through the ArrayList
-				status = status + sentence.get(i) + " "; //adding each word from the text to the one before with a space in between (adding all strings)
+				status = status + sentence.get(i).toLowerCase() + " "; //adding each word from the text to the one before with a space in between (adding all strings)
 			}
 			tweet.updateTwitter(status); //tweeting the strung together string
 
