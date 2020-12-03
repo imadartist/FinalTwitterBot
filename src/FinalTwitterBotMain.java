@@ -122,7 +122,7 @@ public class FinalTwitterBotMain extends PApplet {
 //					results = scraper.scrapeGoogleResults("songs");
 				
 //					scrapeAZ = scraper.scrapeAZResults("Everlasting Love"); //scrapeAZResults is an ArrayList of strings in the Scraper class
-					scrapeLyrics = scraper.scrapeLyricsComResults("Sing");
+					scrapeLyrics = scraper.scrapeLyricsComResults("Love Songs");
 					
 					//print your results
 //					System.out.println(scrapeAZ); 
