@@ -1,6 +1,6 @@
 /* Programmer: Madison Leyens
  * Date: Fall 2020
- * Description: This is the Scraper Class for Twitter Bot. I am not using this functionality in this project.
+ * Description: This is the Scraper Class for Twitter Bot. I am using this to scrape from AZ Lyrics and Lyrics.Com.
  * 
  */
 
@@ -18,7 +18,7 @@ public class Scraper {
 	UserAgent userAgent; // ( an internal 'headless' browser)
 	static String GOOGLE_URL = "http://google.com";
 //	static String SONG_URL = "search.azlyrics.com/search.php";
-	static String SONG_URL = "https://www.lyrics.com/"; // WHERE TO FIND THIS
+	static String SONG_URL = "https://www.lyrics.com/"; 
 	static String HTTP = "http";
 
 	Scraper() {

@@ -1,6 +1,6 @@
 /* Programmer: Madison Leyens
  * Date: Fall 2020
- * Description: This is the Main Class for my Twitter Bot in which I am training my Markov Generator on data from a TXT file and generating from it.
+ * Description: This is the Main Class for my Twitter Bot in which I am training my Markov Generator on webscraped data and generating from it.
  * I have inlcuded keyPressed() functionality that allows the user to tweet these generations.
  * 
  */
@@ -113,16 +113,16 @@ public class FinalTwitterBotMain extends PApplet {
 		// prints the text content of the sites that come up with the google search of
 		// dogs
 		//		//you may use this content to train your AI too
-				Scraper scraper = new Scraper(); 
-				ArrayList<String> scrapeAZ  = new ArrayList<String>();
-				ArrayList<String> scrapeLyrics  = new ArrayList<String>();
+				Scraper scraper = new Scraper(); //scraper object from scraper class
+				ArrayList<String> scrapeAZ  = new ArrayList<String>(); //for scraping AZ Lyrics
+				ArrayList<String> scrapeLyrics  = new ArrayList<String>(); //for scraping Lyrics.com
 				
 				try {
 					//interfascia
-//					results = scraper.scrapeGoogleResults("songs");
+//					results = scraper.scrapeGoogleResults("dogs");
 				
 //					scrapeAZ = scraper.scrapeAZResults("Everlasting Love"); //scrapeAZResults is an ArrayList of strings in the Scraper class
-					scrapeLyrics = scraper.scrapeLyricsComResults("Love Songs");
+					scrapeLyrics = scraper.scrapeLyricsComResults("Love Songs"); //scrapeLyricComResults is an ArrayList of strings in the Scraper class
 					
 					//print your results
 //					System.out.println(scrapeAZ); 
@@ -132,7 +132,7 @@ public class FinalTwitterBotMain extends PApplet {
 //					scraper.scrapeSongs("http://azlyrics.com",  "Hey Jude"); //scrapeSongs is a method in the Scraper class
 //					scraper.scrapeSongs("http://lyrics.com",  "Everlasting Love");
 					
-//					for (int i = 0; i < scrapeAZ.size(); i++) {
+//					for (int i = 0; i < scrapeAZ.size(); i++) { //for scraping AZ lyrics, removing HTML content from text, and training Markov
 //						//remove <br>
 //						String scrapeString = scrapeAZ.get(i);
 //						scrapeString = scrapeAZ.get(i).replaceAll("<br>" , " "); 
@@ -142,7 +142,7 @@ public class FinalTwitterBotMain extends PApplet {
 //						markov.train(t); // training generator on results taken 
 //					}
 					
-					for (int i = 0; i < scrapeLyrics.size(); i++) {
+					for (int i = 0; i < scrapeLyrics.size(); i++) { //for scraping Lyrics.Com and training Markov
 						
 						String lyricsScrape = scrapeLyrics.get(i);
 //						lyricsScrape = scrapeAZ.get(i).replaceAll(")" , " ").replaceAll("(" , " "); 
